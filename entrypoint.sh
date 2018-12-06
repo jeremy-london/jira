@@ -25,6 +25,54 @@ JAVA_OPTS="${JAVA_OPTS} ${CATALINA_OPTS}"
 
 ARGS="$@"
 
+#########
+# echo "Configure server.xml (proxy and context root)"
+# if [ "$(stat --format "%Y" "${JIRA_INSTALL}/conf/server.xml")" -eq "0" ]; then
+
+#   if [ -n "${ADOP_PROXYNAME}" ]; then
+#     xmlstarlet ed --inplace --pf --ps --insert '//Connector[@port="8080"]' --type "attr" --name "proxyName" --value "${ADOP_PROXYNAME}" "${JIRA_INSTALL}/conf/server.xml"
+#   fi
+#   if [ -n "${ADOP_PROXYPORT}" ]; then
+#     xmlstarlet ed --inplace --pf --ps --insert '//Connector[@port="8080"]' --type "attr" --name "proxyPort" --value "${ADOP_PROXYPORT}" "${JIRA_INSTALL}/conf/server.xml"
+#   fi
+#   if [ -n "${ADOP_PROXYSCHEME}" ]; then
+#     xmlstarlet ed --inplace --pf --ps --insert '//Connector[@port="8080"]' --type "attr" --name "scheme" --value "${ADOP_PROXYSCHEME}" "${JIRA_INSTALL}/conf/server.xml"
+#   fi
+#   if [ -n "${JIRA_ROOTPATH}" ]; then
+#     xmlstarlet ed --inplace --pf --ps --update '//Context/@path' --value "${JIRA_ROOTPATH}" "${JIRA_INSTALL}/conf/server.xml"
+#   fi
+
+# fi
+
+#########
+
+echo "Init dbconfig.xml (database)"
+# If configuration is present
+if [[ -n "${JIRA_DATABASE_SERVER}" && -n "${JIRA_DATABASE_NAME}" && -n "${JIRA_DATABASE_USERNAME}" && -n "${JIRA_DATABASE_PASSWORD}" ]];then
+	# At the first launch
+	if [ ! -f "${JIRA_HOME}/dbconfig.xml" ]; then
+		mv "${JIRA_HOME}/dbconfig.xml.template" "${JIRA_HOME}/dbconfig.xml"
+	fi
+	# Update values
+	xmlstarlet ed --inplace -u "/jira-database-config/jdbc-datasource/url" --value "jdbc:postgresql://${JIRA_DATABASE_SERVER}:5432/${JIRA_DATABASE_NAME}" "${JIRA_HOME}/dbconfig.xml"
+	xmlstarlet ed --inplace -u "/jira-database-config/jdbc-datasource/username" --value "${JIRA_DATABASE_USERNAME}" "${JIRA_HOME}/dbconfig.xml"
+	xmlstarlet ed --inplace -u "/jira-database-config/jdbc-datasource/password" --value "${JIRA_DATABASE_PASSWORD}" "${JIRA_HOME}/dbconfig.xml"
+	
+fi
+
+echo "Modify loading plugin timeout"
+sed "s|JVM_SUPPORT_RECOMMENDED_ARGS=.*|JVM_SUPPORT_RECOMMENDED_ARGS=\"-Datlassian.plugins.enable.wait=300\"|g" -i "${JIRA_INSTALL}/bin/setenv.sh"
+
+echo "Checking Postgres availability ..."
+until databasesList=$(PGPASSWORD="${DB_POSTGRES_PASSWORD}" psql -h "${DB_HOST}" -p "5432" -U "postgres"  -c '\l'); do
+  echo "Postgres is unavailable - sleeping 1s ..."
+  sleep 1
+done
+
+echo "Postgres is up !"
+
+
+
 # configure clustering if properties file was specified
 if [ -n "${JIRA_CLUSTER_CONFIG}" ]; then
     #NEW_NODE_ID=$(uuidgen)
