@@ -43,7 +43,7 @@ WORKDIR ${JIRA_HOME}
 COPY entrypoint.sh /entrypoint.sh
 COPY check-java.sh "${JIRA_INSTALL}/bin/check-java.sh"
 COPY check-java.sh "${JIRA_INSTALL}/bin/check-java.sh"
-COPY dbconfig.xml.template "${JIRA_HOME}/dbconfig.xml.template"
+COPY dbconfig.xml.template "${JIRA_INSTALL}/dbconfig.xml.template"
 
 CMD ["/entrypoint.sh", "-fg"]
 ENTRYPOINT ["/sbin/tini", "--"]
