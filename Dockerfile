@@ -19,7 +19,7 @@ LABEL io.openshift.expose-services="8080:http"
 RUN set -x \
 && apk update -qq \
 && update-ca-certificates \
-&& apk add --no-cache ca-certificates curl git openssh bash procps openssl perl ttf-dejavu tini nano \
+&& apk add --no-cache ca-certificates curl git openssh bash procps openssl perl ttf-dejavu tini nano xmlstarlet \
 && rm -rf /var/cache/apk/* /var/lib/{apt,dpkg,cache,log}/ /tmp/* /var/tmp/* \
 && mkdir -p ${JIRA_INSTALL} \
 && mkdir -p ${JIRA_SHARED_HOME} \
