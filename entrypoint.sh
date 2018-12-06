@@ -1,5 +1,4 @@
 #!/bin/bash
-set -euo pipefail
 
 # Set recommended umask of "u=,g=w,o=rwx" (0027)
 umask 0027
