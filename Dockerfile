@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-alpine
+FROM anapsix/alpine-java:8_jdk
 
 MAINTAINER stpork from Mordor team
 
