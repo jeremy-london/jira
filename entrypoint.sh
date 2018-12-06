@@ -50,7 +50,7 @@ echo "Init dbconfig.xml (database)"
 if [[ -n "${JIRA_DATABASE_SERVER}" && -n "${JIRA_DATABASE_NAME}" && -n "${JIRA_DATABASE_USERNAME}" && -n "${JIRA_DATABASE_PASSWORD}" ]];then
 	# At the first launch
 	if [ ! -f "${JIRA_HOME}/dbconfig.xml" ]; then
-		mv "dbconfig.xml.template" "${JIRA_HOME}/dbconfig.xml"
+		cp "${JIRA_INSTALL}/dbconfig.xml.template" "${JIRA_HOME}/dbconfig.xml"
 	fi
 	# Update values
 	xmlstarlet ed --inplace -u "/jira-database-config/jdbc-datasource/url" --value "jdbc:postgresql://${JIRA_DATABASE_SERVER}:5432/${JIRA_DATABASE_NAME}" "${JIRA_HOME}/dbconfig.xml"
@@ -72,10 +72,10 @@ if [ -n "${JIRA_CLUSTER_CONFIG}" ]; then
     cat "${JIRA_CLUSTER_CONFIG}"
 fi
 
-# if database has been previously configured reuse it from shared directory
-if [ -f shared/dbconfig.xml ]; then 
-    cp shared/dbconfig.xml .
-fi
+# # if database has been previously configured reuse it from shared directory
+# if [ -f shared/dbconfig.xml ]; then 
+#     cp shared/dbconfig.xml .
+# fi
 
 export JVM_SUPPORT_RECOMMENDED_ARGS="-Dcluster.node.name=$HOSTNAME"
 if [ -f ${JIRA_SHARED_HOME}/cacerts ]; then 
