@@ -24,27 +24,6 @@ JAVA_OPTS="${JAVA_OPTS} ${CATALINA_OPTS}"
 
 ARGS="$@"
 
-#########
-# echo "Configure server.xml (proxy and context root)"
-# if [ "$(stat --format "%Y" "${JIRA_INSTALL}/conf/server.xml")" -eq "0" ]; then
-
-#   if [ -n "${ADOP_PROXYNAME}" ]; then
-#     xmlstarlet ed --inplace --pf --ps --insert '//Connector[@port="8080"]' --type "attr" --name "proxyName" --value "${ADOP_PROXYNAME}" "${JIRA_INSTALL}/conf/server.xml"
-#   fi
-#   if [ -n "${ADOP_PROXYPORT}" ]; then
-#     xmlstarlet ed --inplace --pf --ps --insert '//Connector[@port="8080"]' --type "attr" --name "proxyPort" --value "${ADOP_PROXYPORT}" "${JIRA_INSTALL}/conf/server.xml"
-#   fi
-#   if [ -n "${ADOP_PROXYSCHEME}" ]; then
-#     xmlstarlet ed --inplace --pf --ps --insert '//Connector[@port="8080"]' --type "attr" --name "scheme" --value "${ADOP_PROXYSCHEME}" "${JIRA_INSTALL}/conf/server.xml"
-#   fi
-#   if [ -n "${JIRA_ROOTPATH}" ]; then
-#     xmlstarlet ed --inplace --pf --ps --update '//Context/@path' --value "${JIRA_ROOTPATH}" "${JIRA_INSTALL}/conf/server.xml"
-#   fi
-
-# fi
-
-#########
-
 echo "Init dbconfig.xml (database)"
 # If configuration is present
 if [[ -n "${JIRA_DATABASE_SERVER}" && -n "${JIRA_DATABASE_NAME}" && -n "${JIRA_DATABASE_USERNAME}" && -n "${JIRA_DATABASE_PASSWORD}" ]];then
@@ -59,10 +38,6 @@ if [[ -n "${JIRA_DATABASE_SERVER}" && -n "${JIRA_DATABASE_NAME}" && -n "${JIRA_D
 	
 fi
 
-echo "Modify loading plugin timeout"
-sed "s|JVM_SUPPORT_RECOMMENDED_ARGS=.*|JVM_SUPPORT_RECOMMENDED_ARGS=\"-Datlassian.plugins.enable.wait=300\"|g" -i "${JIRA_INSTALL}/bin/setenv.sh"
-
-
 # configure clustering if properties file was specified
 if [ -n "${JIRA_CLUSTER_CONFIG}" ]; then
     #NEW_NODE_ID=$(uuidgen)
@@ -71,11 +46,6 @@ if [ -n "${JIRA_CLUSTER_CONFIG}" ]; then
     echo "${JIRA_CLUSTER_CONFIG}:"
     cat "${JIRA_CLUSTER_CONFIG}"
 fi
-
-# # if database has been previously configured reuse it from shared directory
-# if [ -f shared/dbconfig.xml ]; then 
-#     cp shared/dbconfig.xml .
-# fi
 
 export JVM_SUPPORT_RECOMMENDED_ARGS="-Dcluster.node.name=$HOSTNAME"
 if [ -f ${JIRA_SHARED_HOME}/cacerts ]; then 
