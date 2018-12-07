@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  jira-config.properties: |
+          jira.export.excel.enabled=true
+kind: ConfigMap
+metadata:
+  name: jira-config-properties
