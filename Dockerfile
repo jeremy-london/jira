@@ -1,6 +1,6 @@
 FROM anapsix/alpine-java:8_jdk
 
-MAINTAINER stpork from Mordor team
+MAINTAINER Atlassian
 
 ENV JIRA_VERSION=7.7.1 \
 JIRA_INSTALL=/opt/atlassian/jira \
