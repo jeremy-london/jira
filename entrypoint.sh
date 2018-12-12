@@ -32,7 +32,7 @@ if [[ -n "${JIRA_DATABASE_SERVER}" && -n "${JIRA_DATABASE_NAME}" && -n "${JIRA_D
 		cp "${JIRA_INSTALL}/dbconfig.xml.template" "${JIRA_HOME}/dbconfig.xml"
 	fi
 	# Update values
-	xmlstarlet ed --inplace -u "/jira-database-config/jdbc-datasource/url" --value "jdbc:postgresql://${JIRA_DATABASE_SERVER}:5432/${JIRA_DATABASE_NAME}" "${JIRA_HOME}/dbconfig.xml"
+	xmlstarlet ed --inplace -u "/jira-database-config/jdbc-datasource/url" --value "jdbc:postgresql://${JIRA_DATABASE_SERVER}:${JIRA_DATABASE_PORT}/${JIRA_DATABASE_NAME}" "${JIRA_HOME}/dbconfig.xml"
 	xmlstarlet ed --inplace -u "/jira-database-config/jdbc-datasource/username" --value "${JIRA_DATABASE_USERNAME}" "${JIRA_HOME}/dbconfig.xml"
 	xmlstarlet ed --inplace -u "/jira-database-config/jdbc-datasource/password" --value "${JIRA_DATABASE_PASSWORD}" "${JIRA_HOME}/dbconfig.xml"
 	
