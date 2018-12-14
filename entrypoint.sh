@@ -48,9 +48,9 @@ if [ -n "${JIRA_CLUSTER_CONFIG}" ]; then
 fi
 
 export JVM_SUPPORT_RECOMMENDED_ARGS="-Dcluster.node.name=$HOSTNAME"
-if [ -f ${JIRA_HOME}/jre/lib/security/jssecacerts ]; then 
-    JVM_SUPPORT_RECOMMENDED_ARGS="${JVM_SUPPORT_RECOMMENDED_ARGS} -Djavax.net.ssl.trustStore=${JIRA_HOME}/jre/lib/security/jssecacerts"
-fi
+# if [ -f ${JIRA_HOME}/jre/lib/security/jssecacerts ]; then 
+#     JVM_SUPPORT_RECOMMENDED_ARGS="${JVM_SUPPORT_RECOMMENDED_ARGS} -Djavax.net.ssl.trustStore=${JIRA_HOME}/jre/lib/security/jssecacerts"
+# fi
 #-Djavax.net.ssl.trustStore=${JIRA_SHARED_HOME}/cacerts
 
 # Start jira as the correct user.
