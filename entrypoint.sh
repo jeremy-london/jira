@@ -49,8 +49,9 @@ fi
 
 export JVM_SUPPORT_RECOMMENDED_ARGS="-Dcluster.node.name=$HOSTNAME"
 if [ -f ${JIRA_SHARED_HOME}/cacerts ]; then 
-    JVM_SUPPORT_RECOMMENDED_ARGS="${JVM_SUPPORT_RECOMMENDED_ARGS} -Djavax.net.ssl.trustStore=${JIRA_SHARED_HOME}/cacerts"
+    JVM_SUPPORT_RECOMMENDED_ARGS="${JVM_SUPPORT_RECOMMENDED_ARGS}"
 fi
+#-Djavax.net.ssl.trustStore=${JIRA_SHARED_HOME}/cacerts
 
 # Start jira as the correct user.
 if [ "${UID}" -eq 0 ]; then
