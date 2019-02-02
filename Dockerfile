@@ -2,7 +2,7 @@ FROM anapsix/alpine-java:8_jdk
 
 MAINTAINER Atlassian
 
-ENV JIRA_VERSION=7.7.1 \
+ENV JIRA_VERSION=7.13.0 \
 JIRA_INSTALL=/opt/atlassian/jira \
 JIRA_HOME=/var/atlassian/application-data/jira \
 JIRA_SHARED_HOME=/var/atlassian/application-data/jira/shared \
@@ -23,7 +23,7 @@ RUN set -x \
 && rm -rf /var/cache/apk/* /var/lib/{apt,dpkg,cache,log}/ /tmp/* /var/tmp/* \
 && mkdir -p ${JIRA_INSTALL} \
 && mkdir -p ${JIRA_SHARED_HOME} \
-&& curl -fsSL \
+&& curl -k -fsSL \
 "https://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-software-${JIRA_VERSION}.tar.gz" \
 | tar -xz --strip-components=1 -C "${JIRA_INSTALL}" \
 && echo -e "\njira.home=${JIRA_HOME}" >> "${JIRA_INSTALL}/atlassian-jira/WEB-INF/classes/jira-application.properties" \
