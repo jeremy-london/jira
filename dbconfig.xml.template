@@ -3,13 +3,13 @@
 <jira-database-config>
   <name>defaultDS</name>
   <delegator-name>default</delegator-name>
-  <database-type>postgres72</database-type>
+  <database-type>postgres95</database-type>
   <schema-name>public</schema-name>
   <jdbc-datasource>
-    <url>jdbc:postgresql://jirasoftware-postgres:5432/jirasoftware</url>
+    <url>jira-database://jira-database:5432</url>
     <driver-class>org.postgresql.Driver</driver-class>
-    <username>jirasoftware</username>
-    <password>jirasoftware</password>
+    <username>user</username>
+    <password>password</password>
     <pool-min-size>20</pool-min-size>
     <pool-max-size>20</pool-max-size>
     <pool-max-wait>30000</pool-max-wait>
